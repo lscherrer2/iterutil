@@ -12,8 +12,6 @@ The underlying type is `iterutil.Iterator`, but the recommended public construct
 
 ## Install
 
-Once published to PyPI:
-
 ```bash
 pip install iterutil
 ```
