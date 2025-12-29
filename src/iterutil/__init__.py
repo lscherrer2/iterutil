@@ -4,14 +4,20 @@ import typing
 from itertools import chain, filterfalse, islice
 from functools import reduce
 
-__all__ = ["Iterator", "iterator"]
+__all__ = [
+    "Iterator", 
+    "iterator", 
+    "iterate", 
+    "it",
+]
 
-
-def iterator[T](iterable: Iterable[T]) -> Iterator[T]:
+def _iterate[T](iterable: Iterable[T], /) -> Iterator[T]:
     return Iterator(iterable)
 
-def iterate[T](iterable: Iterable[T]) -> Iterator[T]:
-    return Iterator(iterable)
+iterator = _iterate
+iterate = _iterate
+it = _iterate
+
 
 class Iterator[T]:
     def __init__(self, inner: Iterable[T]):
@@ -90,5 +96,5 @@ class Iterator[T]:
         return self._wrap(islice(self, i.start, i.stop, i.step))
 
     @classmethod
-    def _wrap[T](cls, inner: Iterable[T]) -> Iterator[T]:
+    def _wrap(cls, inner: Iterable[T]) -> Iterator[T]:
         return cls(inner=inner)

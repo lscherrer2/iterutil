@@ -2,11 +2,13 @@
 
 Small iterator wrapper inspired by Rust’s iterator chaining.
 
-`iterutil.Iterator` wraps any `Iterable[T]` and provides a fluent, lazy API for common iterator operations (filter/map/zip/etc.).
+`iterutil.it` (aka `iterutil.iterate` / `iterutil.iterator`) wraps any `Iterable[T]` and provides a fluent, lazy API for common iterator operations (filter/map/zip/etc.).
+
+The underlying type is `iterutil.Iterator`, but the recommended public constructor is `it(...)`.
 
 ## Requirements
 
-- Python `>= 3.13` (this project uses PEP 695 type parameter syntax).
+- Python `>= 3.13` (PEP 695 type parameter syntax).
 
 ## Install
 
@@ -25,9 +27,9 @@ pip install -e .
 ## Quick start
 
 ```python
-from iterutil import Iterator
+from iterutil import it
 
-nums = Iterator([1, 2, 3, 4, 5, 6, 7])
+nums = it([1, 2, 3, 4, 5, 6, 7])
 
 result = (
 		nums
@@ -41,7 +43,7 @@ assert result == [2, 6, 10, 14]
 
 ## API overview
 
-All chainable methods are lazy (they return a new `Iterator[...]` wrapping an underlying iterable).
+All chainable methods are lazy (they return a new `Iterator[...]` wrapping an underlying iterable). Start a chain with `it(...)`.
 
 ### Transform / filter
 
@@ -53,9 +55,9 @@ All chainable methods are lazy (they return a new `Iterator[...]` wrapping an un
 	- any non-`None` value is kept
 
 ```python
-from iterutil import Iterator
+from iterutil import it
 
-out = Iterator([1, 2, 3, 4]).filter_map(lambda x: x * 2 if x % 2 else None).collect(list)
+out = it([1, 2, 3, 4]).filter_map(lambda x: x * 2 if x % 2 else None).collect(list)
 assert out == [2, 6]
 ```
 
@@ -67,12 +69,12 @@ assert out == [2, 6]
 - `flatten()`: flattens one level (only meaningful when the items are iterables).
 
 ```python
-from iterutil import Iterator
+from iterutil import it
 
-paired = Iterator([1, 2, 3]).zip(["a", "b"]).collect(list)
+paired = it([1, 2, 3]).zip(["a", "b"]).collect(list)
 assert paired == [(1, "a"), (2, "b")]
 
-flat = Iterator([[1, 2], [], [3]]).flatten().collect(list)
+flat = it([[1, 2], [], [3]]).flatten().collect(list)
 assert flat == [1, 2, 3]
 ```
 
@@ -84,9 +86,9 @@ assert flat == [1, 2, 3]
 - `reduce(fn, initial=None)`: like `functools.reduce`; if `initial` is omitted and the iterator is empty, it raises.
 
 ```python
-from iterutil import Iterator
+from iterutil import it
 
-total = Iterator([1, 2, 3]).fold(lambda acc, x: acc + x, 0)
+total = it([1, 2, 3]).fold(lambda acc, x: acc + x, 0)
 assert total == 6
 ```
 
@@ -100,10 +102,10 @@ assert total == 6
 `Iterator` supports slice syntax using `itertools.islice` semantics:
 
 ```python
-from iterutil import Iterator
+from iterutil import it
 
-it = Iterator([1, 2, 3, 4, 5, 6, 7])
-assert it[1:6:2].collect(list) == [2, 4, 6]
+nums = it([1, 2, 3, 4, 5, 6, 7])
+assert nums[1:6:2].collect(list) == [2, 4, 6]
 ```
 
 ## Important notes

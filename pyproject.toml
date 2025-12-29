@@ -1,6 +1,6 @@
 [project]
 name = "iterutil"
-version = "0.1.1"
+version = "0.1.2"
 description = "A simple iterator wrapper for rust-style iterator chaining"
 authors = [
     { name="Luke Scherrer", email="lukescherrer2@gmail.com" }
